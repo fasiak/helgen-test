@@ -1,0 +1,31 @@
+<div class="grid-container">
+	<h1 class="mat-h1">Dashboard</h1>
+	<mat-button-toggle-group name="buses">
+		<mat-button-toggle *ngFor="let bus of busesList" [value]="bus.VehicleID" (click)="selectBus(bus)">
+			{{bus.VehicleID}}
+		</mat-button-toggle>
+		<mat-button-toggle (click)="clearTracking()">Clear Map</mat-button-toggle>
+	</mat-button-toggle-group>
+	<mat-grid-list cols="2" rowHeight="1100px">
+		<mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+			<mat-card class="dashboard-card">
+				<mat-card-header>
+					<mat-card-title>
+						{{card.title}}
+					</mat-card-title>
+				</mat-card-header>
+				<mat-card-content class="dashboard-card-content">
+					<div class="my-google-map">
+						<google-map height="1000px" width="100%" [zoom]="zoom" [center]="center" [options]="options">
+							<map-marker #somemarker="mapMarker" *ngFor="let marker of markers"
+								[position]="marker.position" [options]="marker.options"
+								(mapClick)="openInfo(somemarker, marker.info)">
+							</map-marker>
+							<map-info-window>{{ infoContent }}</map-info-window>
+						</google-map>
+					</div>
+				</mat-card-content>
+			</mat-card>
+		</mat-grid-tile>
+	</mat-grid-list>
+</div>
